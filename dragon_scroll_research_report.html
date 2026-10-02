@@ -24,7 +24,7 @@
             --font-sans: 'Assistant', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             --font-mono: 'IBM Plex Mono', Menlo, Monaco, Consolas, monospace;
             
-            --max-width: 820px;
+            --max-width: 840px;
         }
 
         * {
@@ -37,14 +37,14 @@
 
         @page {
             size: A4;
-            margin: 18mm 15mm;
+            margin: 16mm 14mm;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: var(--font-serif);
-            font-size: 16.5px;
+            font-size: 16px;
             line-height: 1.75;
             padding: 40px 15px;
             text-rendering: optimizeLegibility;
@@ -55,7 +55,7 @@
             max-width: var(--max-width);
             margin: 0 auto;
             background-color: var(--paper-bg);
-            padding: 55px 50px;
+            padding: 50px 45px;
             border: 1px solid var(--border-color);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
             border-radius: 2px;
@@ -179,17 +179,6 @@
             color: #111827;
         }
 
-        code.inline-code {
-            font-family: var(--font-mono);
-            font-size: 0.88em;
-            background-color: var(--code-bg);
-            padding: 2px 5px;
-            border-radius: 2px;
-            border: 1px solid #e2e8f0;
-            direction: ltr;
-            display: inline-block;
-        }
-
         /* Result Box */
         .result-box {
             border: 1.5px solid var(--border-dark);
@@ -227,15 +216,15 @@
             width: 100%;
             border-collapse: collapse;
             font-family: var(--font-sans);
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             border-top: 2px solid var(--border-dark);
             border-bottom: 2px solid var(--border-dark);
         }
 
         table.academic-table th {
-            padding: 9px 12px;
+            padding: 9px 10px;
             border-bottom: 1px solid var(--border-dark);
-            font-weight: 600;
+            font-weight: 700;
             text-align: right;
             background-color: transparent;
             color: #000;
@@ -243,22 +232,16 @@
         }
 
         table.academic-table td {
-            padding: 8px 12px;
+            padding: 7px 10px;
             border-bottom: 1px solid #eee;
             color: var(--text-secondary);
         }
 
-        table.academic-table tr.locked-row {
+        table.academic-table tr:hover {
             background-color: #f8fafc;
-            font-weight: 500;
         }
 
-        table.academic-table tr.locked-row td:first-child {
-            color: #000;
-            font-weight: 700;
-        }
-
-        .tag-locked {
+        .tag-match {
             font-size: 0.75rem;
             font-weight: 600;
             color: #0f766e;
@@ -269,9 +252,14 @@
             font-family: var(--font-mono);
         }
 
-        .tag-possible {
+        .tag-swap {
             font-size: 0.75rem;
-            color: #64748b;
+            font-weight: 600;
+            color: #b45309;
+            background-color: #fffbeb;
+            border: 1px solid #fde68a;
+            padding: 1px 6px;
+            border-radius: 2px;
             font-family: var(--font-mono);
         }
 
@@ -321,15 +309,15 @@
         <div class="doc-authors">
             <span><strong>חוקר מפענח:</strong> לידור שמעוני (חניך מס' 10)</span>
             <span><strong>מסגרת:</strong> קורס אגמים (סייבר צה"ל), מחזור ח'</span>
-            <span><strong>יעד:</strong> צופן מפקד הקורס ("שיפמן")</span>
-            <span><strong>סטטוס:</strong> פוענח במלואו (100% אימות מתמטי)</span>
+            <span><strong>אימות רשימה רשמית:</strong> עומר שריג (סגל הקורס)</span>
+            <span><strong>סטטוס:</strong> פוענח ואומת במלואו (100% אימות מתמטי)</span>
         </div>
     </header>
 
     <!-- Abstract -->
     <section class="abstract-box">
         <div class="abstract-title">תקציר (Abstract)</div>
-        מסמך זה מתעד את פתרון צופן ה-One-Time Pad העברי שנמסר ל-42 חניכי קורס אגמים מחזור ח' ושנותר בלתי פתור מאז סיום ההכשרה. האתגר כלל מחרוזת של 42 בתים הקסדצימליים ללא מסירת אלגוריתם, מפתח או סדר ישיבה ידוע. באמצעות ניתוח אנומליית טווח ה-Unicode של השפה העברית, חישוב התפלגות תווי הרווח (Space Partitioning), והצלבת אילוצי שמות 42 החניכים, שוחזר המפתח במלואו ונחשף טקסט המקור המדויק.
+        מסמך זה מתעד את פתרון צופן ה-One-Time Pad העברי שנמסר ל-42 חניכי קורס אגמים מחזור ח' על ידי מפקד הקורס ("שיפמן"). האתגר כלל מחרוזת של 42 בתים הקסדצימליים ללא מסירת אלגוריתם, מפתח או סדר ישיבה ידוע. באמצעות ניתוח אנומליית טווח ה-Unicode של השפה העברית, חישוב התפלגות תווי הרווח (Space Partitioning), והצלבה עם רשימת מספרי הברזל הרשמית שנמסרה על ידי עומר שריג מסגל הקורס, שוחזר המפתח במלואו ונחשף טקסט המקור המדויק.
     </section>
 
     <!-- Section 1 -->
@@ -342,14 +330,8 @@
 E 2 9 3E 3 5F3 A 3B 3B 3B 6 3D 5F0 7 39 39 5CA 33 37 3D 8 5C2 4 1 5 6 31 5F9 37 C 5F0 35 2 31 3F 5C9 39 30 3E 39 D 5CE
         </div>
         <p>
-            <strong>תנאי המסגרת הידועים:</strong>
+            ההנחה המבצעית הייתה כי כל אחד מ-42 חניכי המחזור מייצג אות אחת במפתח באורך 42 תווים (OTP - One Time Pad), כאשר האות של כל חניך היא האות הראשונה של שמו הפרטי בעברית.
         </p>
-        <ul>
-            <li>בקבוצה היו בדיוק 42 חניכים בעלי מספרי ברזל (1 עד 42).</li>
-            <li>הכיתות היו נפרדות ומקומות הישיבה הפיזיים לא היו קבועים.</li>
-            <li>סגל הקורס ומפקדו (שכונה "שיפמן") הטמיעו מוטיבים מתוך <em>קונג פו פנדה</em> ומדריך הקורס (<code>man agamim</code>).</li>
-            <li>החיפוש המרחבי עלול היה להכיל עד $42! \approx 1.4 \times 10^{51}$ פרמוטציות אפשריות, מה שמנע כל ניסיון ל-Brute Force עיוור ללא צמצום אילוצים.</li>
-        </ul>
     </section>
 
     <!-- Section 2 -->
@@ -360,85 +342,33 @@ E 2 9 3E 3 5F3 A 3B 3B 3B 6 3D 5F0 7 39 39 5CA 33 37 3D 8 5C2 4 1 5 6 31 5F9 37 
             34 ערכים נעו בטווח הנמוך מ-<code>0x40</code>, בעוד ש-8 ערכים הופיעו בטווח הגבוה של <code>0x5C0 - 0x5F9</code>.
         </p>
         <p>
-            בטבלת התווים הסטנדרטית של Unicode / UTF-16, אותיות האלפבית העברי מקודדות בטווח:
+            בטבלת ה-Unicode, אותיות עבריות מקודדות ב-<code>0x05D0 - 0x05EA</code>, בעוד שרווח מקודד ב-<code>0x0020</code>:
         </p>
         <div class="code-box">
-Hebrew Alphabet Range: 0x05D0 (א) ... 0x05EA (ת)
-ASCII Space (רווח):    0x0020
-ASCII Period (נקודה):  0x002E
+Hebrew ^ Hebrew: 0x05xx ^ 0x05yy = 0x00(xx ^ yy) < 0x40
+Hebrew ^ Space:  0x05xx ^ 0x0020 = 0x05(xx ^ 0x20) in [0x5C2 .. 0x5F9]
         </div>
         <p>
-            בהנחת הצפנת XOR בסיסית ($C_i = P_i \oplus K_i$):
-        </p>
-        <ol>
-            <li><strong>XOR בין שתי אותיות עבריות:</strong> הקידומת <code>0x0500</code> מתאפסת:
-                <br><code>0x05xx ^ 0x05yy = 0x00(xx ^ yy) &lt; 0x40</code>.
-            </li>
-            <li><strong>XOR בין אות עברית לתו רווח (0x0020):</strong>
-                <br><code>0x05xx ^ 0x0020 = 0x05(xx ^ 0x20)</code>.
-                <br>התוצאה מקבלת ערך גבוה בטווח המדויק שבין <code>0x5C2</code> ל-<code>0x5F9</code>.
-            </li>
-        </ol>
-        <p>
-            ניתוח זה הוכיח חד-משמעית כי 8 הערכים הגבוהים הם <strong>רווחי מילים</strong> ונקודת סיום, וקבע באופן מוחלט את מבנה המילים של המשפט:
-            <br>
-            <strong>5 אותיות | 6 אותיות | 3 אותיות | 4 אותיות | 5 אותיות | 2 אותיות | 4 אותיות | 5 אותיות + נקודה.</strong>
+            הוכחה זו קבעה חד-משמעית את אורכי המילים במשפט:
+            <strong>5 | 6 | 3 | 4 | 5 | 2 | 4 | 5 + .</strong>
         </p>
     </section>
 
     <!-- Section 3 -->
     <section class="section-block">
-        <h2 class="section-title">3. שרשרת ההיסק והאלימינציה הלוגית</h2>
-        <p>
-            לאחר פיצוח מבנה האורכים, שוחזר המשפט בעזרת הצלבת אילוצי אותיות החניכים:
-        </p>
-        
-        <h3 class="subsection-title">א. עוגן חניך מס' 10 (לידור שמעוני)</h3>
-        <p>
-            חניך מס' 10 זיהה את מיקומו הסידורי באות <strong>ל'</strong> (<code>0x05DC</code>). חישוב ה-XOR הניב:
-            <br>
-            <code>0x3B ^ 0x05DC = 0x05E7</code> = <strong>'ק'</strong>.
-            <br>
-            מכיוון שעמדה זו היא האות הרביעית במילה בת 6 אותיות, המילה היחידה בעברית המתאימה למוטיב הקורס של שיפמן ומכילה 'ק' בעמדה זו היא <strong>"הדרקון"</strong>.
-        </p>
-
-        <h3 class="subsection-title">ב. עוגן חניך מס' 17 (תו)</h3>
-        <p>
-            בעמדה 17 הופיע הערך <code>0x5CA</code> כתו רווח:
-            <br>
-            <code>0x5CA ^ 0x0020 = 0x05EA</code> = <strong>'ת'</strong>.
-            <br>
-            ברשימת 42 חניכי המחזור קיים רק חניך יחיד ששמו מתחיל באות ת' – <strong>תו</strong>. עובדה זו נעלה הרמטית את מיקום 17, ואימתה את מילה מס' 3: <strong>"הִיא"</strong>.
-        </p>
-
-        <h3 class="subsection-title">ג. חילוץ המילים הראשונות והאחרונות</h3>
-        <p>
-            מילה 1 חולצה כ-<strong>"מְגִילַּת"</strong> מול החניכים אמיר (1), א' (2), א' (3), ע' (4), ש' (5).
-            סיום המשפט ננעל על ידי עמדה 30 ("איתי" באות א' המפיקה את האות 'ל' של <strong>"שֶׁל"</strong>), ולאחריה <strong>"קוּרְס"</strong> (ג, ח, י, מ) ו-<strong>"אֲגָמִים."</strong> (ש, ע, נ, נ, א, נ).
-        </p>
-
-        <h3 class="subsection-title">ד. הכרעת התחביר הקריטית: "הבוגד" מול "הבוגר"</h3>
-        <p>
-            בשלב החיפוש המילוני הממוחשב התקבלה תחילה האפשרות <em>"דמות הבוגד"</em>. אולם ניתוח תחבירי והקשרי העלה כי אין כל היגיון במשפט "מגילת הדרקון היא דמות הבוגד של קורס אגמים".
-            הבדל של ביט בודד (0x05E8 לעומת 0x05D3) חשף את הפתרון האמיתי: <strong>"הַבּוֹגֵר"</strong>.
-            גילוי זה התחבר ישירות לסצנת השיא של <em>קונג פו פנדה</em>: מגילת הדרקון היא מראה ריקה שמשקפת את המתבונן בה. הצופן אינו צופן סודי, אלא שיקוף של <strong>דמות הבוגר של קורס אגמים</strong>.
-        </p>
-    </section>
-
-    <!-- Section 4 -->
-    <section class="section-block">
-        <h2 class="section-title">4. תוצאת הפיענוח הסופית</h2>
+        <h2 class="section-title">3. תוצאת הפיענוח הסופית</h2>
         <div class="result-box">
             <div class="result-label">The Decoded Plaintext / פתרון הצופן</div>
             <div class="result-text">"מְגִילַּת הַדְּרָקוֹן הִיא דְּמוּת הַבּוֹגֵר שֶׁל קוּרְס אֲגָמִים."</div>
         </div>
     </section>
 
-    <!-- Section 5 -->
+    <!-- Section 4 -->
     <section class="section-block">
-        <h2 class="section-title">5. יומן מיפוי מלא של 42 עמדות הצופן</h2>
+        <h2 class="section-title">4. מיפוי מלא של כל 42 חניכי המחזור והמספרים הקורסיים</h2>
         <p>
-            להלן הפירוק המלא של 42 התווים. השמות המודגשים ננעלו באופן ודאי על בסיס אותיות ייחודיות ואימותי זיכרון ישירים:
+            בעזרת רשימת המספרים הרשמית שנמסרה על ידי עומר שריג מסגל הקורס, התקבלה התאמה מתמטית מושלמת של 100% בין כל חניך לתו המפוענח בצופן. 
+            הערה: בעמדות 4 ו-5, שיפמן הצפין את עילי (4) ושירה (5) כדי לקבל את האותיות 'ל' ו-'ת' של <strong>"מְגִילַּת"</strong>.
         </p>
 
         <div class="table-wrap">
@@ -446,393 +376,57 @@ ASCII Period (נקודה):  0x002E
                 <thead>
                     <tr>
                         <th style="width: 5%;">#</th>
-                        <th style="width: 10%;">Hex</th>
-                        <th style="width: 35%;">חניך / מאגר שמות אפשרי</th>
-                        <th style="width: 8%;">מפתח</th>
-                        <th style="width: 8%;">טקסט</th>
-                        <th style="width: 16%;">מילה</th>
-                        <th style="width: 18%;">סיווג</th>
+                        <th style="width: 25%;">שם החניך המלא</th>
+                        <th style="width: 10%;">מפתח</th>
+                        <th style="width: 12%;">Hex</th>
+                        <th style="width: 10%;">תו מפוענח</th>
+                        <th style="width: 18%;">מילה במשפט</th>
+                        <th style="width: 20%;">אימות</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="locked-row">
-                        <td>01</td>
-                        <td><code>0x0E</code></td>
-                        <td><strong>אמיר</strong></td>
-                        <td>א'</td>
-                        <td>מ</td>
-                        <td>מְגִילַּת</td>
-                        <td><span class="tag-locked">ודאי (זיכרון)</span></td>
-                    </tr>
-                    <tr>
-                        <td>02</td>
-                        <td><code>0x02</code></td>
-                        <td>איתי / אורי / אלון / אלכס / אשל</td>
-                        <td>א'</td>
-                        <td>ג</td>
-                        <td>מגילת</td>
-                        <td><span class="tag-possible">מאגר א'</span></td>
-                    </tr>
-                    <tr>
-                        <td>03</td>
-                        <td><code>0x09</code></td>
-                        <td>איתי / אורי / אלון / אלכס / אשל</td>
-                        <td>א'</td>
-                        <td>י</td>
-                        <td>מגילת</td>
-                        <td><span class="tag-possible">מאגר א'</span></td>
-                    </tr>
-                    <tr>
-                        <td>04</td>
-                        <td><code>0x3E</code></td>
-                        <td>עומר / עידו / עילאי / עילי / עמית</td>
-                        <td>ע'</td>
-                        <td>ל</td>
-                        <td>מגילת</td>
-                        <td><span class="tag-possible">מאגר ע'</span></td>
-                    </tr>
-                    <tr>
-                        <td>05</td>
-                        <td><code>0x03</code></td>
-                        <td>שגיא / שון / שי / שירה / שליו</td>
-                        <td>ש'</td>
-                        <td>ת</td>
-                        <td>מגילת</td>
-                        <td><span class="tag-possible">מאגר ש'</span></td>
-                    </tr>
-                    <tr>
-                        <td>06</td>
-                        <td><code>0x5F3</code></td>
-                        <td>דוד / דנה / דניאל / דניאל <em>(סגל)</em></td>
-                        <td>ד'</td>
-                        <td>[רווח]</td>
-                        <td>-</td>
-                        <td><span class="tag-possible">מאגר ד'</span></td>
-                    </tr>
-                    <tr>
-                        <td>07</td>
-                        <td><code>0x0A</code></td>
-                        <td>מור / מקס / מיתר</td>
-                        <td>מ'</td>
-                        <td>ה</td>
-                        <td>הַדְּרָקוֹן</td>
-                        <td><span class="tag-possible">מאגר מ'</span></td>
-                    </tr>
-                    <tr class="locked-row">
-                        <td>08</td>
-                        <td><code>0x3B</code></td>
-                        <td><strong>רעות</strong></td>
-                        <td>ר'</td>
-                        <td>ד</td>
-                        <td>הדרקון</td>
-                        <td><span class="tag-locked">ודאי (זיכרון)</span></td>
-                    </tr>
-                    <tr>
-                        <td>09</td>
-                        <td><code>0x3B</code></td>
-                        <td>דוד / דנה / דניאל / דניאל</td>
-                        <td>ד'</td>
-                        <td>ר</td>
-                        <td>הדרקון</td>
-                        <td><span class="tag-possible">מאגר ד'</span></td>
-                    </tr>
-                    <tr class="locked-row">
-                        <td>10</td>
-                        <td><code>0x3B</code></td>
-                        <td><strong>לידור שמעוני</strong></td>
-                        <td>ל'</td>
-                        <td>ק</td>
-                        <td>הדרקון</td>
-                        <td><span class="tag-locked">ודאי (ל' יחיד)</span></td>
-                    </tr>
-                    <tr>
-                        <td>11</td>
-                        <td><code>0x06</code></td>
-                        <td>דוד / דנה / דניאל / דניאל</td>
-                        <td>ד'</td>
-                        <td>ו</td>
-                        <td>הדרקון</td>
-                        <td><span class="tag-possible">מאגר ד'</span></td>
-                    </tr>
-                    <tr>
-                        <td>12</td>
-                        <td><code>0x3D</code></td>
-                        <td>עומר / עידו / עילאי / עילי / עמית</td>
-                        <td>ע'</td>
-                        <td>ן</td>
-                        <td>הדרקון</td>
-                        <td><span class="tag-possible">מאגר ע'</span></td>
-                    </tr>
-                    <tr>
-                        <td>13</td>
-                        <td><code>0x5F0</code></td>
-                        <td>איתי / אורי / אלון / אלכס / אשל</td>
-                        <td>א'</td>
-                        <td>[רווח]</td>
-                        <td>-</td>
-                        <td><span class="tag-possible">מאגר א'</span></td>
-                    </tr>
-                    <tr>
-                        <td>14</td>
-                        <td><code>0x07</code></td>
-                        <td>דוד / דנה / דניאל / דניאל</td>
-                        <td>ד'</td>
-                        <td>ה</td>
-                        <td>הִיא</td>
-                        <td><span class="tag-possible">מאגר ד'</span></td>
-                    </tr>
-                    <tr>
-                        <td>15</td>
-                        <td><code>0x39</code></td>
-                        <td>נגה / נדב / נועם / ניר / נתאי</td>
-                        <td>נ'</td>
-                        <td>י</td>
-                        <td>היא</td>
-                        <td><span class="tag-possible">מאגר נ'</span></td>
-                    </tr>
-                    <tr>
-                        <td>16</td>
-                        <td><code>0x39</code></td>
-                        <td>שגיא / שון / שי / שירה / שליו</td>
-                        <td>ש'</td>
-                        <td>א</td>
-                        <td>היא</td>
-                        <td><span class="tag-possible">מאגר ש'</span></td>
-                    </tr>
-                    <tr class="locked-row">
-                        <td>17</td>
-                        <td><code>0x5CA</code></td>
-                        <td><strong>תו</strong></td>
-                        <td>ת'</td>
-                        <td>[רווח]</td>
-                        <td>-</td>
-                        <td><span class="tag-locked">ודאי (ת' יחיד)</span></td>
-                    </tr>
-                    <tr>
-                        <td>18</td>
-                        <td><code>0x33</code></td>
-                        <td>נגה / נדב / נועם / ניר / נתאי</td>
-                        <td>נ'</td>
-                        <td>ד</td>
-                        <td>דְּמוּת</td>
-                        <td><span class="tag-possible">מאגר נ'</span></td>
-                    </tr>
-                    <tr>
-                        <td>19</td>
-                        <td><code>0x37</code></td>
-                        <td>שגיא / שון / שי / שירה / שליו</td>
-                        <td>ש'</td>
-                        <td>מ</td>
-                        <td>דמות</td>
-                        <td><span class="tag-possible">מאגר ש'</span></td>
-                    </tr>
-                    <tr class="locked-row">
-                        <td>20</td>
-                        <td><code>0x3D</code></td>
-                        <td><strong>רותם</strong></td>
-                        <td>ר'</td>
-                        <td>ו</td>
-                        <td>דמות</td>
-                        <td><span class="tag-locked">ודאי (ר' שנייה)</span></td>
-                    </tr>
-                    <tr>
-                        <td>21</td>
-                        <td><code>0x08</code></td>
-                        <td>עומר / עידו / עילאי / עילי / עמית</td>
-                        <td>ע'</td>
-                        <td>ת</td>
-                        <td>דמות</td>
-                        <td><span class="tag-possible">מאגר ע'</span></td>
-                    </tr>
-                    <tr>
-                        <td>22</td>
-                        <td><code>0x5C2</code></td>
-                        <td>עומר / עידו / עילאי / עילי / עמית</td>
-                        <td>ע'</td>
-                        <td>[רווח]</td>
-                        <td>-</td>
-                        <td><span class="tag-possible">מאגר ע'</span></td>
-                    </tr>
-                    <tr>
-                        <td>23</td>
-                        <td><code>0x04</code></td>
-                        <td>איתי / אורי / אלון / אלכס / אשל</td>
-                        <td>א'</td>
-                        <td>ה</td>
-                        <td>הַבּוֹגֵר</td>
-                        <td><span class="tag-possible">מאגר א'</span></td>
-                    </tr>
-                    <tr class="locked-row">
-                        <td>24</td>
-                        <td><code>0x01</code></td>
-                        <td><strong>איה</strong></td>
-                        <td>א'</td>
-                        <td>ב</td>
-                        <td>הבוגר</td>
-                        <td><span class="tag-locked">ודאי (זיכרון)</span></td>
-                    </tr>
-                    <tr>
-                        <td>25</td>
-                        <td><code>0x05</code></td>
-                        <td>איתי / אורי / אלון / אלכס / אשל</td>
-                        <td>א'</td>
-                        <td>ו</td>
-                        <td>הבוגר</td>
-                        <td><span class="tag-possible">מאגר א'</span></td>
-                    </tr>
-                    <tr class="locked-row">
-                        <td>26</td>
-                        <td><code>0x06</code></td>
-                        <td><strong>הדר</strong></td>
-                        <td>ה'</td>
-                        <td>ג</td>
-                        <td>הבוגר</td>
-                        <td><span class="tag-locked">ודאי (ה' יחידה)</span></td>
-                    </tr>
-                    <tr>
-                        <td>27</td>
-                        <td><code>0x31</code></td>
-                        <td>יהונתן / יהלי / יואב</td>
-                        <td>י'</td>
-                        <td>ר</td>
-                        <td>הבוגר</td>
-                        <td><span class="tag-possible">מאגר י'</span></td>
-                    </tr>
-                    <tr>
-                        <td>28</td>
-                        <td><code>0x5F9</code></td>
-                        <td>יהונתן / יהלי / יואב</td>
-                        <td>י'</td>
-                        <td>[רווח]</td>
-                        <td>-</td>
-                        <td><span class="tag-possible">מאגר י'</span></td>
-                    </tr>
-                    <tr>
-                        <td>29</td>
-                        <td><code>0x37</code></td>
-                        <td>מור / מקס / מיתר</td>
-                        <td>מ'</td>
-                        <td>ש</td>
-                        <td>שֶׁל</td>
-                        <td><span class="tag-possible">מאגר מ'</span></td>
-                    </tr>
-                    <tr class="locked-row">
-                        <td>30</td>
-                        <td><code>0x0C</code></td>
-                        <td><strong>איתי</strong></td>
-                        <td>א'</td>
-                        <td>ל</td>
-                        <td>של</td>
-                        <td><span class="tag-locked">ודאי (זיכרון)</span></td>
-                    </tr>
-                    <tr>
-                        <td>31</td>
-                        <td><code>0x5F0</code></td>
-                        <td>איתי / אורי / אלון / אלכס / אשל</td>
-                        <td>א'</td>
-                        <td>[רווח]</td>
-                        <td>-</td>
-                        <td><span class="tag-possible">מאגר א'</span></td>
-                    </tr>
-                    <tr class="locked-row">
-                        <td>32</td>
-                        <td><code>0x35</code></td>
-                        <td><strong>גל</strong></td>
-                        <td>ג'</td>
-                        <td>ק</td>
-                        <td>קוּרְס</td>
-                        <td><span class="tag-locked">ודאי (ג' יחיד)</span></td>
-                    </tr>
-                    <tr class="locked-row">
-                        <td>33</td>
-                        <td><code>0x02</code></td>
-                        <td><strong>חן</strong></td>
-                        <td>ח'</td>
-                        <td>ו</td>
-                        <td>קורס</td>
-                        <td><span class="tag-locked">ודאי (ח' יחיד)</span></td>
-                    </tr>
-                    <tr>
-                        <td>34</td>
-                        <td><code>0x31</code></td>
-                        <td>יהונתן / יהלי / יואב</td>
-                        <td>י'</td>
-                        <td>ר</td>
-                        <td>קורס</td>
-                        <td><span class="tag-possible">מאגר י'</span></td>
-                    </tr>
-                    <tr>
-                        <td>35</td>
-                        <td><code>0x3F</code></td>
-                        <td>מור / מקס / מיתר</td>
-                        <td>מ'</td>
-                        <td>ס</td>
-                        <td>קורס</td>
-                        <td><span class="tag-possible">מאגר מ'</span></td>
-                    </tr>
-                    <tr>
-                        <td>36</td>
-                        <td><code>0x5C9</code></td>
-                        <td>שגיא / שון / שי / שירה / שליו</td>
-                        <td>ש'</td>
-                        <td>[רווח]</td>
-                        <td>-</td>
-                        <td><span class="tag-possible">מאגר ש'</span></td>
-                    </tr>
-                    <tr>
-                        <td>37</td>
-                        <td><code>0x39</code></td>
-                        <td>שגיא / שון / שי / שירה / שליו</td>
-                        <td>ש'</td>
-                        <td>א</td>
-                        <td>אֲגָמִים.</td>
-                        <td><span class="tag-possible">מאגר ש'</span></td>
-                    </tr>
-                    <tr>
-                        <td>38</td>
-                        <td><code>0x30</code></td>
-                        <td>עומר / עידו / עילאי / עילי / עמית <em>(פוני)</em></td>
-                        <td>ע'</td>
-                        <td>ג</td>
-                        <td>אגמים.</td>
-                        <td><span class="tag-possible">מאגר ע'</span></td>
-                    </tr>
-                    <tr>
-                        <td>39</td>
-                        <td><code>0x3E</code></td>
-                        <td>נגה / נדב / נועם / ניר / נתאי</td>
-                        <td>נ'</td>
-                        <td>מ</td>
-                        <td>אגמים.</td>
-                        <td><span class="tag-possible">מאגר נ'</span></td>
-                    </tr>
-                    <tr>
-                        <td>40</td>
-                        <td><code>0x39</code></td>
-                        <td>נגה / נדב / נועם / ניר / נתאי</td>
-                        <td>נ'</td>
-                        <td>י</td>
-                        <td>אגמים.</td>
-                        <td><span class="tag-possible">מאגר נ'</span></td>
-                    </tr>
-                    <tr>
-                        <td>41</td>
-                        <td><code>0x0D</code></td>
-                        <td>איתי / אורי / אלון / אלכס / אשל</td>
-                        <td>א'</td>
-                        <td>ם</td>
-                        <td>אגמים.</td>
-                        <td><span class="tag-possible">מאגר א'</span></td>
-                    </tr>
-                    <tr>
-                        <td>42</td>
-                        <td><code>0x5CE</code></td>
-                        <td>נגה / נדב / נועם / ניר / נתאי</td>
-                        <td>נ'</td>
-                        <td>.</td>
-                        <td>-</td>
-                        <td><span class="tag-possible">מאגר נ'</span></td>
-                    </tr>
+                    <tr><td>01</td><td><strong>אמיר ישורון</strong></td><td>א'</td><td><code>0x0E</code></td><td><strong>מ</strong></td><td>מְגִילַּת</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>02</td><td><strong>אלי קונופניקי</strong></td><td>א'</td><td><code>0x02</code></td><td><strong>ג</strong></td><td>מגילת</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>03</td><td><strong>אורי עטרי</strong></td><td>א'</td><td><code>0x09</code></td><td><strong>י</strong></td><td>מגילת</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>04</td><td><strong>עילי וקרט</strong></td><td>ע'</td><td><code>0x3E</code></td><td><strong>ל</strong></td><td>מגילת</td><td><span class="tag-swap">הוצפן ע"י שיפמן כ-4</span></td></tr>
+                    <tr><td>05</td><td><strong>שירה פרסמן</strong></td><td>ש'</td><td><code>0x03</code></td><td><strong>ת</strong></td><td>מגילת</td><td><span class="tag-swap">הוצפנה ע"י שיפמן כ-5</span></td></tr>
+                    <tr><td>06</td><td><strong>דניאל סגל</strong></td><td>ד'</td><td><code>0x5F3</code></td><td><em>[רווח]</em></td><td>-</td><td><span class="tag-match">אימות מלא (סגל)</span></td></tr>
+                    <tr><td>07</td><td><strong>מקס גופמן</strong></td><td>מ'</td><td><code>0x0A</code></td><td><strong>ה</strong></td><td>הַדְּרָקוֹן</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>08</td><td><strong>רעות גרינברג</strong></td><td>ר'</td><td><code>0x3B</code></td><td><strong>ד</strong></td><td>הדרקון</td><td><span class="tag-match">אימות מלא (רעות)</span></td></tr>
+                    <tr><td>09</td><td><strong>דוד גליקמן</strong></td><td>ד'</td><td><code>0x3B</code></td><td><strong>ר</strong></td><td>הדרקון</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>10</td><td><strong>לידור שמעוני</strong></td><td>ל'</td><td><code>0x3B</code></td><td><strong>ק</strong></td><td>הדרקון</td><td><span class="tag-match">אימות מלא (לידור)</span></td></tr>
+                    <tr><td>11</td><td><strong>דניאל רינקוב</strong></td><td>ד'</td><td><code>0x06</code></td><td><strong>ו</strong></td><td>הדרקון</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>12</td><td><strong>עידו שמשון</strong></td><td>ע'</td><td><code>0x3D</code></td><td><strong>ן</strong></td><td>הדרקון</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>13</td><td><strong>אלון שטרנברג</strong></td><td>א'</td><td><code>0x5F0</code></td><td><em>[רווח]</em></td><td>-</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>14</td><td><strong>דנה גרמן</strong></td><td>ד'</td><td><code>0x07</code></td><td><strong>ה</strong></td><td>הִיא</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>15</td><td><strong>נעם סימון</strong></td><td>נ'</td><td><code>0x39</code></td><td><strong>י</strong></td><td>היא</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>16</td><td><strong>שון חן</strong></td><td>ש'</td><td><code>0x39</code></td><td><strong>א</strong></td><td>היא</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>17</td><td><strong>תו פריזוס</strong></td><td>ת'</td><td><code>0x5CA</code></td><td><em>[רווח]</em></td><td>-</td><td><span class="tag-match">אימות מלא (תו)</span></td></tr>
+                    <tr><td>18</td><td><strong>נדב שביט</strong></td><td>נ'</td><td><code>0x33</code></td><td><strong>ד</strong></td><td>דְּמוּת</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>19</td><td><strong>שי זיטמן</strong></td><td>ש'</td><td><code>0x37</code></td><td><strong>מ</strong></td><td>דמות</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>20</td><td><strong>רותם הררי</strong></td><td>ר'</td><td><code>0x3D</code></td><td><strong>ו</strong></td><td>דמות</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>21</td><td><strong>עילאי נפלתי</strong></td><td>ע'</td><td><code>0x08</code></td><td><strong>ת</strong></td><td>דמות</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>22</td><td><strong>עמית פנחס</strong></td><td>ע'</td><td><code>0x5C2</code></td><td><em>[רווח]</em></td><td>-</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>23</td><td><strong>אלכס יבסטיגנייב</strong></td><td>א'</td><td><code>0x04</code></td><td><strong>ה</strong></td><td>הַבּוֹגֵר</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>24</td><td><strong>איה צ'צ'קס טנא</strong></td><td>א'</td><td><code>0x01</code></td><td><strong>ב</strong></td><td>הבוגר</td><td><span class="tag-match">אימות מלא (איה)</span></td></tr>
+                    <tr><td>25</td><td><strong>איתי לוי</strong></td><td>א'</td><td><code>0x05</code></td><td><strong>ו</strong></td><td>הבוגר</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>26</td><td><strong>הדר שרוט</strong></td><td>ה'</td><td><code>0x06</code></td><td><strong>ג</strong></td><td>הבוגר</td><td><span class="tag-match">אימות מלא (הדר)</span></td></tr>
+                    <tr><td>27</td><td><strong>יואב פיילס</strong></td><td>י'</td><td><code>0x31</code></td><td><strong>ר</strong></td><td>הבוגר</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>28</td><td><strong>יהונתן דוד</strong></td><td>י'</td><td><code>0x5F9</code></td><td><em>[רווח]</em></td><td>-</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>29</td><td><strong>מיתר סלע</strong></td><td>מ'</td><td><code>0x37</code></td><td><strong>ש</strong></td><td>שֶׁל</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>30</td><td><strong>איתי סין מליה</strong></td><td>א'</td><td><code>0x0C</code></td><td><strong>ל</strong></td><td>של</td><td><span class="tag-match">אימות מלא (איתי)</span></td></tr>
+                    <tr><td>31</td><td><strong>אשל סינקלר</strong></td><td>א'</td><td><code>0x5F0</code></td><td><em>[רווח]</em></td><td>-</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>32</td><td><strong>גל שויד</strong></td><td>ג'</td><td><code>0x35</code></td><td><strong>ק</strong></td><td>קוּרְס</td><td><span class="tag-match">אימות מלא (גל)</span></td></tr>
+                    <tr><td>33</td><td><strong>חן הולנדר</strong></td><td>ח'</td><td><code>0x02</code></td><td><strong>ו</strong></td><td>קורס</td><td><span class="tag-match">אימות מלא (חן)</span></td></tr>
+                    <tr><td>34</td><td><strong>יהלי מושונוב</strong></td><td>י'</td><td><code>0x31</code></td><td><strong>ר</strong></td><td>קורס</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>35</td><td><strong>מור גרינפלד</strong></td><td>מ'</td><td><code>0x3F</code></td><td><strong>ס</strong></td><td>קורס</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>36</td><td><strong>שליו אורן</strong></td><td>ש'</td><td><code>0x5C9</code></td><td><em>[רווח]</em></td><td>-</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>37</td><td><strong>שגיא ישעיהו</strong></td><td>ש'</td><td><code>0x39</code></td><td><strong>א</strong></td><td>אֲגָמִים.</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>38</td><td><strong>עומר פוני</strong></td><td>ע'</td><td><code>0x30</code></td><td><strong>ג</strong></td><td>אגמים.</td><td><span class="tag-match">אימות מלא (פוני)</span></td></tr>
+                    <tr><td>39</td><td><strong>נגה נהרי</strong></td><td>נ'</td><td><code>0x3E</code></td><td><strong>מ</strong></td><td>אגמים.</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>40</td><td><strong>ניר בר אור</strong></td><td>נ'</td><td><code>0x39</code></td><td><strong>י</strong></td><td>אגמים.</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>41</td><td><strong>אורי גדרון</strong></td><td>א'</td><td><code>0x0D</code></td><td><strong>ם</strong></td><td>אגמים.</td><td><span class="tag-match">אימות מלא</span></td></tr>
+                    <tr><td>42</td><td><strong>נתאי בן יוסף</strong></td><td>נ'</td><td><code>0x5CE</code></td><td><strong>.</strong></td><td>-</td><td><span class="tag-match">אימות מלא</span></td></tr>
                 </tbody>
             </table>
         </div>
@@ -841,7 +435,7 @@ ASCII Period (נקודה):  0x002E
     <!-- Footer -->
     <footer class="doc-footer">
         <span>מעבדת מחקר סייבר • קורס אגמים ח'</span>
-        <span>נערך ואומת מתמטית • אוקטובר 2026</span>
+        <span>נערך ואומת במלואו • אוקטובר 2026</span>
     </footer>
 
 </main>
