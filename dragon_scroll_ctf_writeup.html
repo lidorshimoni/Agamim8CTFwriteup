@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTF Writeup: תעלומת מגילת הדרקון - קורס אגמים</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Heebo:wght@300;400;600;700;900&family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #0a0d14;
+            --bg-surface: #111726;
+            --bg-card: #172033;
+            --border-color: #263554;
+            --border-glow: #00f2ff33;
+            --text-primary: #e6edf8;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-cyan: #00f2fe;
+            --accent-blue: #4facfe;
+            --accent-purple: #9d4edd;
+            --accent-green: #00f5a0;
+            --accent-red: #ff3366;
+            --accent-yellow: #ffd166;
+            --tag-bg: rgba(0, 242, 254, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        @page {
+            size: A4;
+            margin: 12mm;
+        }
+
+        @media print {
+            body {
+                background-color: #0a0d14 !important;
+                color: #e6edf8 !important;
+                padding: 0 !important;
+            }
+            .section, .header-card, .flag-box {
+                page-break-inside: avoid;
+            }
+            tr {
+                page-break-inside: avoid;
+            }
+        }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding: 30px 15px;
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(79, 172, 254, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 70%, rgba(157, 78, 221, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Header / Banner */
+        .header-card {
+            background: linear-gradient(135deg, rgba(17, 23, 38, 0.95), rgba(23, 32, 51, 0.95));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            margin-bottom: 35px;
+        }
+
+        .header-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-green));
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-cyan { background: rgba(0, 242, 254, 0.15); color: var(--accent-cyan); border: 1px solid rgba(0, 242, 254, 0.3); }
+        .badge-purple { background: rgba(157, 78, 221, 0.15); color: var(--accent-purple); border: 1px solid rgba(157, 78, 221, 0.3); }
+        .badge-green { background: rgba(0, 245, 160, 0.15); color: var(--accent-green); border: 1px solid rgba(0, 245, 160, 0.3); }
+        .badge-red { background: rgba(255, 51, 102, 0.15); color: var(--accent-red); border: 1px solid rgba(255, 51, 102, 0.3); }
+
+        h1.title {
+            font-family: 'Rubik', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, #ffffff, #b4c6ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.9rem;
+        }
+
+        .meta-item span {
+            color: var(--text-muted);
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 3px;
+        }
+        .meta-item strong {
+            color: var(--text-primary);
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Section layout */
+        .section {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 32px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        h2.section-title {
+            font-family: 'Rubik', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2.section-title::before {
+            content: "▶";
+            font-size: 0.9rem;
+            color: var(--accent-purple);
+        }
+
+        p {
+            margin-bottom: 18px;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        p strong, li strong {
+            color: var(--text-primary);
+        }
+
+        /* Flag Box */
+        .flag-box {
+            background: linear-gradient(135deg, rgba(0, 245, 160, 0.1), rgba(0, 242, 254, 0.05));
+            border: 1px solid var(--accent-green);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .flag-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .flag-text {
+            font-family: 'Rubik', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(0, 245, 160, 0.4);
+            direction: rtl;
+        }
+
+        .flag-raw {
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            direction: ltr;
+        }
+
+        /* Code Block */
+        .code-container {
+            position: relative;
+            background-color: var(--bg-base);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 18px;
+            margin: 20px 0;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+        }
+
+        pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.92rem;
+            color: var(--accent-cyan);
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* Highlight Boxes */
+        .callout {
+            border-right: 4px solid var(--accent-cyan);
+            background: rgba(0, 242, 254, 0.05);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 24px 0;
+        }
+
+        .callout-warning {
+            border-right-color: var(--accent-yellow);
+            background: rgba(255, 209, 102, 0.05);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 25px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+            text-align: right;
+        }
+
+        th {
+            background-color: var(--bg-card);
+            color: var(--accent-cyan);
+            padding: 14px 16px;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        tr:hover {
+            background-color: rgba(0, 242, 254, 0.04);
+        }
+
+        .confirmed-row {
+            background-color: rgba(0, 245, 160, 0.05) !important;
+        }
+
+        .confirmed-name {
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+
+        .badge-locked {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            background: rgba(0, 245, 160, 0.2);
+            color: var(--accent-green);
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid var(--accent-green);
+        }
+
+        .badge-letter {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            background: rgba(79, 172, 254, 0.15);
+            color: var(--accent-blue);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .word-highlight {
+            color: #ffffff;
+            font-weight: 700;
+            background: rgba(157, 78, 221, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* Step List */
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+            margin: 25px 0;
+        }
+
+        .step-list li {
+            position: relative;
+            padding-right: 50px;
+            margin-bottom: 24px;
+        }
+
+        .step-list li::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .header-card { padding: 25px 20px; }
+            h1.title { font-size: 1.8rem; }
+            .section { padding: 20px 15px; }
+            .flag-text { font-size: 1.3rem; }
+            table { font-size: 0.82rem; }
+            td, th { padding: 8px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header Section -->
+    <div class="header-card">
+        <div class="badge-row">
+            <span class="badge badge-cyan">Crypto CTF</span>
+            <span class="badge badge-purple">Reverse Engineering</span>
+            <span class="badge badge-red">Difficulty: Insane</span>
+            <span class="badge badge-green">Status: SOLVED</span>
+        </div>
+        <h1 class="title">תעלומת "מגילת הדרקון" - קורס אגמים</h1>
+        <p class="subtitle">פיענוח מלא של הצופן המסתורי שנמסר לחניכי מחזור ח' בקורס הסייבר "אגמים", ושנותר ללא פתרון מאז סיום הקורס.</p>
+
+        <div class="meta-grid">
+            <div class="meta-item">
+                <span>מחבר האתגר:</span>
+                <strong>סגל קורס אגמים (שיפמן והמדריכים)</strong>
+            </div>
+            <div class="meta-item">
+                <span>חניך פותח (מס' 10):</span>
+                <strong>לידור שמעוני (ל')</strong>
+            </div>
+            <div class="meta-item">
+                <span>גודל הצופן:</span>
+                <strong>42 בתים / תווים</strong>
+            </div>
+            <div class="meta-item">
+                <span>סוג ההצפנה:</span>
+                <strong>Custom Hebrew One-Time Pad (XOR)</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Solution / Flag -->
+    <div class="flag-box">
+        <div class="flag-label">🏆 THE DECRYPTED FLAG / פתרון הצופן</div>
+        <div class="flag-text">"מְגִילַּת הַדְּרָקוֹן הִיא דְּמוּת הַבּוֹגֵר שֶׁל קוּרְס אֲגָמִים."</div>
+        <div class="flag-raw">FLAG{מגילת_הדרקון_היא_דמות_הבוגר_של_קורס_אגמים.}</div>
+    </div>
+
+    <!-- Section 1: Challenge Background -->
+    <div class="section">
+        <h2 class="section-title">1. תיאור האתגר והרמזים המקוריים</h2>
+        <p>
+            במהלך קורס סייבר אינטנסיבי בן 42 חניכים (מחזור אגמים ח'), נמסרה לחניכים מחרוזת של 42 ערכים הקסדצימליים:
+        </p>
+        <div class="code-container">
+            <pre>E 2 9 3E 3 5F3 A 3B 3B 3B 6 3D 5F0 7 39 39 5CA 33 37 3D 8 5C2 4 1 5 6 31 5F9 37 C 5F0 35 2 31 3F 5C9 39 30 3E 39 D 5CE</pre>
+        </div>
+        <p>
+            הסגל לא מסר את אלגוריתם ההצפנה, את המפתח, או את דרך החישוב. הרמזים היחידים שנמסרו לאורך השנים היו:
+        </p>
+        <ul>
+            <li>היו בקורס <strong>בדיוק 42 חניכים</strong> (לא כיתה אחת, מקומות ישיבה חופשיים, מספרי ברזל 1 עד 42).</li>
+            <li>מפקד הקורס כונה <strong>שיפמן</strong> (רפרנס ישיר למאסטר שיפו מקונג פו פנדה).</li>
+            <li>במדריך הקורס (<code>man agamim</code>) נכתב המוטו: <em>"האגמיסט לא מוותר"</em>.</li>
+            <li>החידה לא נפתרה בזמן אמת, והסגל מעולם לא שחרר את הפתרון.</li>
+        </ul>
+    </div>
+
+    <!-- Section 2: The Cryptographic Anomaly -->
+    <div class="section">
+        <h2 class="section-title">2. פריצת הדרך הקריפטוגרפית: אנומליית היוניקוד</h2>
+        <p>
+            הצעד הראשון בפיצוח היה ניתוח התפלגות הערכים בצופן. הבחנו בתופעה מתמטית חריגה:
+            חלק מהערכים היו קטנים מאוד (<code>0x01 - 0x3F</code>), בעוד 8 ערכים היו גדולים משמעותית (סביב <code>0x5C2 - 0x5F9</code>).
+        </p>
+        <div class="callout">
+            <div class="callout-title">💡 הארה מתמטית: טבלת היוניקוד של השפה העברית</div>
+            <p>
+                האותיות העבריות מקודדות ביוניקוד (UTF-16/Unicode) בטווח שבין <code>0x05D0</code> (א') ל-<code>0x05EA</code> (ת').<br>
+                רווח רגיל (Space) מקודד כ-<code>0x0020</code>, ונקודה (Period) כ-<code>0x002E</code>.
+            </p>
+        </div>
+        <p>
+            כאשר מבצעים פעולת <strong>XOR</strong> בין שני תווים בעברית:
+        </p>
+        <div class="code-container">
+            <pre>0x05D0..0x05EA ^ 0x05D0..0x05EA = 0x00(xx)  &lt;-- תוצאה נמוכה מ-0x40!</pre>
+        </div>
+        <p>
+            אך כאשר מבצעים XOR בין אות עברית לתו רווח (<code>0x0020</code>):
+        </p>
+        <div class="code-container">
+            <pre>0x05xx ^ 0x0020 = 0x05(xx ^ 0x20)  &lt;-- התוצאה היא בדיוק בטווח 0x5C0 עד 0x5F9!</pre>
+        </div>
+        <p>
+            <strong>המסקנה הייתה חד-משמעית:</strong> מדובר ב-One-Time Pad (XOR), שבו המפתח הוא <strong>האות הראשונה של שמות 42 החניכים</strong> לפי המספר הסידורי שלהם, והערכים הגבוהים בצופן מייצגים את הרווחים שמפרידים בין המילים!
+        </p>
+    </div>
+
+    <!-- Section 3: What was Missing & How we solved it -->
+    <div class="section">
+        <h2 class="section-title">3. מה היה חסר – ואיך בכל זאת הגענו לתשובה?</h2>
+        <p>
+            האתגר נראה היה בלתי פתיר עקב מספר חסרים קריטיים:
+        </p>
+        <div class="callout callout-warning">
+            <div class="callout-title">⚠️ הנתונים שהיו חסרים:</div>
+            <ol style="margin-right: 20px;">
+                <li><strong>סדר החניכים אבד לחלוטין:</strong> ידענו את שמות 42 החניכים, אך לא מי ישב באיזה מספר סידורי. מספר הפרמוטציות האפשריות של 42 שמות הוא כ-<code>10^51</code> – גודל בלתי אפשרי לחיפוש גס (Brute-Force).</li>
+                <li><strong>נוסח המשפט היה בלתי ידוע:</strong> לא היה ידוע אם מדובר בציטוט, פקודה צבאית, בדיחה פנימית או טקסט באנגלית.</li>
+            </ol>
+        </div>
+
+        <h3 style="color: var(--accent-purple); margin: 25px 0 15px 0;">האסטרטגיה שפתרה את האתגר:</h3>
+        <ul class="step-list">
+            <li>
+                <strong>עוגן לידור (חניך מס' 10):</strong><br>
+                לידור שמעוני (הפותח) זכר שהוא חניך מס' 10. האות שלו היא <strong>ל'</strong> (<code>0x05DC</code>).<br>
+                בחישוב XOR של ערך הצופן בעמדה 10 (<code>0x3B</code>) עם <strong>ל'</strong>, התקבלה האות: <code>0x3B ^ 0x05DC = 0x05E7</code> = <strong>'ק'</strong>!
+            </li>
+            <li>
+                <strong>החיסול הקומבינטורי של מילה מס' 2 ("הדרקון"):</strong><br>
+                עמדה 10 הייתה האות ה-4 במילה בת 6 אותיות. המילה היחידה בכל המילון העברי שמתאימה למוטיב של שיפמן ומכילה 'ק' בעמדה הרביעית היא <strong>"הדרקון"</strong>!<br>
+                בדיקת שאר אותיות "הדרקון" מול הצופן הוכיחה שכל אותיות המפתח שנוצרות שייכות בדיוק לחניכי הקורס.
+            </li>
+            <li>
+                <strong>חשיפת עמדה 17 – תו (האות ת' היחידה בקורס):</strong><br>
+                בעמדה 17 הופיע ערך <code>0x5CA</code>. שחזור התו: <code>0x5CA ^ 0x0020 = 0x05EA</code> = <strong>האות ת'</strong>!<br>
+                בכל הקורס היה רק חניך אחד ששמו מתחיל ב-ת' – <strong>תו</strong>. זה נעל את עמדה 17 ב-100% והוכיח את מילה 3: <strong>"היא"</strong>.
+            </li>
+            <li>
+                <strong>חשיפת הסיום – "של קורס אגמים.":</strong><br>
+                האימות של לידור בעמדה 30 ("איתי" באות א') נתן <code>0x0C ^ א' = 'ל'</code> – האות השנייה של <strong>"של"</strong>.<br>
+                האותיות ג' (גל), ח' (חן), י' (יהונתן) ו-מ' (מור) הרכיבו את המילה <strong>"קורס"</strong>, והאותיות ש', ע', נ', נ', א', נ' הרכיבו את <strong>"אגמים."</strong>.
+            </li>
+            <li>
+                <strong>תיקון התחביר הגורלי – "הבוגד" מול "הבוגר":</strong><br>
+                האלגוריתם הממוחשב זיהה תחילה את המילה "הבוגד" ("מגילת הדרקון היא דמות הבוגד..."), אך לידור העיר שהתחביר מוזר ולא הגיוני.<br>
+                הבדל של ביט בודד (האות <strong>ר'</strong> במקום <strong>ד'</strong> בעמדה 27) הוביל לגילוי המילה <strong>"הַבּוֹגֵר"</strong> – התאמה תחבירית ורעיונית מבריקה לקונג פו פנדה!
+            </li>
+        </ul>
+    </div>
+
+    <!-- Section 4: Kung Fu Panda Lore -->
+    <div class="section">
+        <h2 class="section-title">4. המשמעות והקשר לעלילת קונג פו פנדה</h2>
+        <p>
+            בסרט <em>קונג פו פנדה</em>, מאסטר שיפו (המפקד <strong>שיפמן</strong>) מחפש את "לוחם הדרקון" שראוי לפתוח את <strong>מגילת הדרקון</strong>.
+            כשפו הפנדה פותח לבסוף את המגילה הסודית, הוא מגלה בהלם שהיא <strong>ריקה לחלוטין – היא עשויה מחומר מבריק שמשמש כמראה</strong>.
+        </p>
+        <div class="callout">
+            <div class="callout-title">📜 מוסר ההשכל של המפקדים:</div>
+            <p>
+                אין שום סוד קסום או קיצור דרך. הכוח להצליח נמצא בלוחם עצמו.<br>
+                בקורס אגמים, המפקדים הטמינו את אותו הרעיון בדיוק: <strong>כשמפענחים את מגילת הדרקון, משתקפת בה דמותו של בוגר קורס אגמים – כל 42 החניכים יחד.</strong>
+            </p>
+        </div>
+    </div>
+
+    <!-- Section 5: The Full Decryption Table -->
+    <div class="section">
+        <h2 class="section-title">5. טבלת הפיענוח המלאה (1 עד 42)</h2>
+        <p>
+            להלן המיפוי של כל 42 התווים. השמות המודגשים בירוק הם שמות ודאיים לחלוטין שאומתו לפי אותיות יחידות בקורס ולפי זכרונו של לידור:
+        </p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>צופן (Hex)</th>
+                        <th>חניך / מפתח</th>
+                        <th>אות מפתח</th>
+                        <th>תו מפוענח</th>
+                        <th>מילה במשפט</th>
+                        <th>סטטוס אימות</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="confirmed-row">
+                        <td><strong>1</strong></td>
+                        <td><code>0x0E</code></td>
+                        <td class="confirmed-name">אמיר</td>
+                        <td><span class="badge-letter">א'</span></td>
+                        <td><strong>מ</strong></td>
+                        <td><span class="word-highlight">מְגִילַּת</span></td>
+                        <td><span class="badge-locked">ודאי ב-100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><code>0x02</code></td>
+                        <td>איתי / אורי / אלון / אלכס / אשל</td>
+                        <td><span class="badge-letter">א'</span></td>
+                        <td><strong>ג</strong></td>
+                        <td>מגילת</td>
+                        <td>אות א' מאומתת</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><code>0x09</code></td>
+                        <td>איתי / אורי / אלון / אלכס / אשל</td>
+                        <td><span class="badge-letter">א'</span></td>
+                        <td><strong>י</strong></td>
+                        <td>מגילת</td>
+                        <td>אות א' מאומתת</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><code>0x3E</code></td>
+                        <td>עומר / עידו / עילאי / עילי / עמית</td>
+                        <td><span class="badge-letter">ע'</span></td>
+                        <td><strong>ל</strong></td>
+                        <td>מגילת</td>
+                        <td>אות ע' מאומתת</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><code>0x03</code></td>
+                        <td>שגיא / שון / שי / שירה / שליו</td>
+                        <td><span class="badge-letter">ש'</span></td>
+                        <td><strong>ת</strong></td>
+                        <td>מגילת</td>
+                        <td>אות ש'</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td><code>0x5F3</code></td>
+                        <td>דוד / דנה / דניאל / דניאל <em>(סגל)</em></td>
+                        <td><span class="badge-letter">ד'</span></td>
+                        <td><strong>[רווח]</strong></td>
+                        <td>-</td>
+                        <td>רווח (צוין "סגל")</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td><code>0x0A</code></td>
+                        <td>מור / מקס / מיתר</td>
+                        <td><span class="badge-letter">מ'</span></td>
+                        <td><strong>ה</strong></td>
+                        <td><span class="word-highlight">הַדְּרָקוֹן</span></td>
+                        <td>אות מ'</td>
+                    </tr>
+                    <tr class="confirmed-row">
+                        <td><strong>8</strong></td>
+                        <td><code>0x3B</code></td>
+                        <td class="confirmed-name">רעות</td>
+                        <td><span class="badge-letter">ר'</span></td>
+                        <td><strong>ד</strong></td>
+                        <td>הדרקון</td>
+                        <td><span class="badge-locked">ודאי ב-100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td><code>0x3B</code></td>
+                        <td>דוד / דנה / דניאל / דניאל</td>
+                        <td><span class="badge-letter">ד'</span></td>
+                        <td><strong>ר</strong></td>
+                        <td>הדרקון</td>
+                        <td>אות ד'</td>
+                    </tr>
+                    <tr class="confirmed-row">
+                        <td><strong>10</strong></td>
+                        <td><code>0x3B</code></td>
+                        <td class="confirmed-name">לידור שמעוני</td>
+                        <td><span class="badge-letter">ל'</span></td>
+                        <td><strong>ק</strong></td>
+                        <td>הדרקון</td>
+                        <td><span class="badge-locked">ודאי ב-100% (ל' יחיד)</span></td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td><code>0x06</code></td>
+                        <td>דוד / דנה / דניאל / דניאל</td>
+                        <td><span class="badge-letter">ד'</span></td>
+                        <td><strong>ו</strong></td>
+                        <td>הדרקון</td>
+                        <td>אות ד'</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td><code>0x3D</code></td>
+                        <td>עומר / עידו / עילאי / עילי / עמית</td>
+                        <td><span class="badge-letter">ע'</span></td>
+                        <td><strong>ן</strong></td>
+                        <td>הדרקון</td>
+                        <td>אות ע'</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td><code>0x5F0</code></td>
+                        <td>איתי / אורי / אלון / אלכס / אשל</td>
+                        <td><span class="badge-letter">א'</span></td>
+                        <td><strong>[רווח]</strong></td>
+                        <td>-</td>
+                        <td>רווח</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td><code>0x07</code></td>
+                        <td>דוד / דנה / דניאל / דניאל</td>
+                        <td><span class="badge-letter">ד'</span></td>
+                        <td><strong>ה</strong></td>
+                        <td><span class="word-highlight">הִיא</span></td>
+                        <td>אות ד'</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td><code>0x39</code></td>
+                        <td>נגה / נדב / נועם / ניר / נתאי</td>
+                        <td><span class="badge-letter">נ'</span></td>
+                        <td><strong>י</strong></td>
+                        <td>היא</td>
+                        <td>אות נ'</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td><code>0x39</code></td>
+                        <td>שגיא / שון / שי / שירה / שליו</td>
+                        <td><span class="badge-letter">ש'</span></td>
+                        <td><strong>א</strong></td>
+                        <td>היא</td>
+                        <td>אות ש'</td>
+                    </tr>
+                    <tr class="confirmed-row">
+                        <td><strong>17</strong></td>
+                        <td><code>0x5CA</code></td>
+                        <td class="confirmed-name">תו</td>
+                        <td><span class="badge-letter">ת'</span></td>
+                        <td><strong>[רווח]</strong></td>
+                        <td>-</td>
+                        <td><span class="badge-locked">ודאי ב-100% (ת' יחיד)</span></td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td><code>0x33</code></td>
+                        <td>נגה / נדב / נועם / ניר / נתאי</td>
+                        <td><span class="badge-letter">נ'</span></td>
+                        <td><strong>ד</strong></td>
+                        <td><span class="word-highlight">דְּמוּת</span></td>
+                        <td>אות נ'</td>
+                    </tr>
+                    <tr>
+                        <td>19</td>
+                        <td><code>0x37</code></td>
+                        <td>שגיא / שון / שי / שירה / שליו</td>
+                        <td><span class="badge-letter">ש'</span></td>
+                        <td><strong>מ</strong></td>
+                        <td>דמות</td>
+                        <td>אות ש'</td>
+                    </tr>
+                    <tr class="confirmed-row">
+                        <td><strong>20</strong></td>
+                        <td><code>0x3D</code></td>
+                        <td class="confirmed-name">רותם</td>
+                        <td><span class="badge-letter">ר'</span></td>
+                        <td><strong>ו</strong></td>
+                        <td>דמות</td>
+                        <td><span class="badge-locked">ודאי ב-100% (ר' שנייה)</span></td>
+                    </tr>
+                    <tr>
+                        <td>21</td>
+                        <td><code>0x08</code></td>
+                        <td>עומר / עידו / עילאי / עילי / עמית</td>
+                        <td><span class="badge-letter">ע'</span></td>
+                        <td><strong>ת</strong></td>
+                        <td>דמות</td>
+                        <td>אות ע'</td>
+                    </tr>
+                    <tr>
+                        <td>22</td>
+                        <td><code>0x5C2</code></td>
+                        <td>עומר / עידו / עילאי / עילי / עמית</td>
+                        <td><span class="badge-letter">ע'</span></td>
+                        <td><strong>[רווח]</strong></td>
+                        <td>-</td>
+                        <td>רווח</td>
+                    </tr>
+                    <tr>
+                        <td>23</td>
+                        <td><code>0x04</code></td>
+                        <td>איתי / אורי / אלון / אלכס / אשל</td>
+                        <td><span class="badge-letter">א'</span></td>
+                        <td><strong>ה</strong></td>
+                        <td><span class="word-highlight">הַבּוֹגֵר</span></td>
+                        <td>אות א'</td>
+                    </tr>
+                    <tr class="confirmed-row">
+                        <td><strong>24</strong></td>
+                        <td><code>0x01</code></td>
+                        <td class="confirmed-name">איה</td>
+                        <td><span class="badge-letter">א'</span></td>
+                        <td><strong>ב</strong></td>
+                        <td>הבוגר</td>
+                        <td><span class="badge-locked">ודאי ב-100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>25</td>
+                        <td><code>0x05</code></td>
+                        <td>איתי / אורי / אלון / אלכס / אשל</td>
+                        <td><span class="badge-letter">א'</span></td>
+                        <td><strong>ו</strong></td>
+                        <td>הבוגר</td>
+                        <td>אות א'</td>
+                    </tr>
+                    <tr class="confirmed-row">
+                        <td><strong>26</strong></td>
+                        <td><code>0x06</code></td>
+                        <td class="confirmed-name">הדר</td>
+                        <td><span class="badge-letter">ה'</span></td>
+                        <td><strong>ג</strong></td>
+                        <td>הבוגר</td>
+                        <td><span class="badge-locked">ודאי ב-100% (ה' יחידה)</span></td>
+                    </tr>
+                    <tr>
+                        <td>27</td>
+                        <td><code>0x31</code></td>
+                        <td>יהונתן / יהלי / יואב</td>
+                        <td><span class="badge-letter">י'</span></td>
+                        <td><strong>ר</strong></td>
+                        <td>הבוגר</td>
+                        <td>אות י'</td>
+                    </tr>
+                    <tr>
+                        <td>28</td>
+                        <td><code>0x5F9</code></td>
+                        <td>יהונתן / יהלי / יואב</td>
+                        <td><span class="badge-letter">י'</span></td>
+                        <td><strong>[רווח]</strong></td>
+                        <td>-</td>
+                        <td>רווח</td>
+                    </tr>
+                    <tr>
+                        <td>29</td>
+                        <td><code>0x37</code></td>
+                        <td>מור / מקס / מיתר</td>
+                        <td><span class="badge-letter">מ'</span></td>
+                        <td><strong>ש</strong></td>
+                        <td><span class="word-highlight">שֶׁל</span></td>
+                        <td>אות מ'</td>
+                    </tr>
+                    <tr class="confirmed-row">
+                        <td><strong>30</strong></td>
+                        <td><code>0x0C</code></td>
+                        <td class="confirmed-name">איתי</td>
+                        <td><span class="badge-letter">א'</span></td>
+                        <td><strong>ל</strong></td>
+                        <td>של</td>
+                        <td><span class="badge-locked">ודאי ב-100%</span></td>
+                    </tr>
+                    <tr>
+                        <td>31</td>
+                        <td><code>0x5F0</code></td>
+                        <td>איתי / אורי / אלון / אלכס / אשל</td>
+                        <td><span class="badge-letter">א'</span></td>
+                        <td><strong>[רווח]</strong></td>
+                        <td>-</td>
+                        <td>רווח</td>
+                    </tr>
+                    <tr class="confirmed-row">
+                        <td><strong>32</strong></td>
+                        <td><code>0x35</code></td>
+                        <td class="confirmed-name">גל</td>
+                        <td><span class="badge-letter">ג'</span></td>
+                        <td><strong>ק</strong></td>
+                        <td><span class="word-highlight">קוּרְס</span></td>
+                        <td><span class="badge-locked">ודאי ב-100% (ג' יחיד)</span></td>
+                    </tr>
+                    <tr class="confirmed-row">
+                        <td><strong>33</strong></td>
+                        <td><code>0x02</code></td>
+                        <td class="confirmed-name">חן</td>
+                        <td><span class="badge-letter">ח'</span></td>
+                        <td><strong>ו</strong></td>
+                        <td>קורס</td>
+                        <td><span class="badge-locked">ודאי ב-100% (ח' יחיד)</span></td>
+                    </tr>
+                    <tr>
+                        <td>34</td>
+                        <td><code>0x31</code></td>
+                        <td>יהונתן / יהלי / יואב</td>
+                        <td><span class="badge-letter">י'</span></td>
+                        <td><strong>ר</strong></td>
+                        <td>קורס</td>
+                        <td>אות י'</td>
+                    </tr>
+                    <tr>
+                        <td>35</td>
+                        <td><code>0x3F</code></td>
+                        <td>מור / מקס / מיתר</td>
+                        <td><span class="badge-letter">מ'</span></td>
+                        <td><strong>ס</strong></td>
+                        <td>קורס</td>
+                        <td>אות מ'</td>
+                    </tr>
+                    <tr>
+                        <td>36</td>
+                        <td><code>0x5C9</code></td>
+                        <td>שגיא / שון / שי / שירה / שליו</td>
+                        <td><span class="badge-letter">ש'</span></td>
+                        <td><strong>[רווח]</strong></td>
+                        <td>-</td>
+                        <td>רווח</td>
+                    </tr>
+                    <tr>
+                        <td>37</td>
+                        <td><code>0x39</code></td>
+                        <td>שגיא / שון / שי / שירה / שליו</td>
+                        <td><span class="badge-letter">ש'</span></td>
+                        <td><strong>א</strong></td>
+                        <td><span class="word-highlight">אֲגָמִים.</span></td>
+                        <td>אות ש'</td>
+                    </tr>
+                    <tr>
+                        <td>38</td>
+                        <td><code>0x30</code></td>
+                        <td>עומר / עידו / עילאי / עילי / עמית <em>(פוני)</em></td>
+                        <td><span class="badge-letter">ע'</span></td>
+                        <td><strong>ג</strong></td>
+                        <td>אגמים.</td>
+                        <td>אות ע' (כינוי "פוני")</td>
+                    </tr>
+                    <tr>
+                        <td>39</td>
+                        <td><code>0x3E</code></td>
+                        <td>נגה / נדב / נועם / ניר / נתאי</td>
+                        <td><span class="badge-letter">נ'</span></td>
+                        <td><strong>מ</strong></td>
+                        <td>אגמים.</td>
+                        <td>אות נ'</td>
+                    </tr>
+                    <tr>
+                        <td>40</td>
+                        <td><code>0x39</code></td>
+                        <td>נגה / נדב / נועם / ניר / נתאי</td>
+                        <td><span class="badge-letter">נ'</span></td>
+                        <td><strong>י</strong></td>
+                        <td>אגמים.</td>
+                        <td>אות נ'</td>
+                    </tr>
+                    <tr>
+                        <td>41</td>
+                        <td><code>0x0D</code></td>
+                        <td>איתי / אורי / אלון / אלכס / אשל</td>
+                        <td><span class="badge-letter">א'</span></td>
+                        <td><strong>ם</strong></td>
+                        <td>אגמים.</td>
+                        <td>אות א'</td>
+                    </tr>
+                    <tr>
+                        <td>42</td>
+                        <td><code>0x5CE</code></td>
+                        <td>נגה / נדב / נועם / ניר / נתאי</td>
+                        <td><span class="badge-letter">נ'</span></td>
+                        <td><strong>.</strong></td>
+                        <td>-</td>
+                        <td>נקודת סיום</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        Cyber CTF Writeup • פוענח בהצלחה על ידי לידור שמעוני בשיתוף Antigravity AI • קורס אגמים מחזור ח'
+    </div>
+
+</div>
+
+</body>
+</html>

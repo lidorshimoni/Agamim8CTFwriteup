@@ -1,0 +1,23 @@
+using System;
+using System.Text;
+
+public class TestHakod {
+    static int[] cipher = new int[] {
+        0xE, 0x2, 0x9, 0x3E, 0x3, 0x5F3, 0xA, 0x3B, 0x3B, 0x3B, 0x6, 0x3D, 0x5F0,
+        0x7, 0x39, 0x39, 0x5CA, 0x33, 0x37, 0x3D, 0x8, 0x5C2, 0x4, 0x1, 0x5, 0x6,
+        0x31, 0x5F9, 0x37, 0xC, 0x5F0, 0x35, 0x2, 0x31, 0x3F, 0x5C9, 0x39, 0x30,
+        0x3E, 0x39, 0xD, 0x5CE
+    };
+
+    public static void Main() {
+        Console.OutputEncoding = Encoding.UTF8;
+        // Pos 18..21: cipher[17..20] = 0x33, 0x37, 0x3D, 0x8
+        string word = "הקוד";
+        char[] other = new char[4];
+        for (int i = 0; i < 4; i++) {
+            other[i] = (char)(cipher[17 + i] ^ (int)word[i]);
+            Console.WriteLine(string.Format("pos {0}: cipher=0x{1:X} ^ '{2}' = '{3}' (0x{4:X})", 18 + i, cipher[17 + i], word[i], other[i], (int)other[i]));
+        }
+        Console.WriteLine("Other word: " + new string(other));
+    }
+}

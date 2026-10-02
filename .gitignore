@@ -1,0 +1,12 @@
+# Temp and helper execution scripts
+find_git*.ps1
+install_mingit.ps1
+generate_pdf.ps1
+*.exe
+*.pdb
+*.tmp
+
+# System
+Thumbs.db
+.DS_Store
+.system_generated/
